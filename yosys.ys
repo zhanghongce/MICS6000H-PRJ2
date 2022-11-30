@@ -1,0 +1,18 @@
+
+read_aiger out.aag
+read_liberty -lib lib/NANDNOR.lib
+opt;
+# techmap using abc
+abc -liberty lib/NANDNOR.lib; opt
+
+write_verilog -noattr inv-no-mapped.v
+
+# clear -all
+design -reset
+
+read_verilog inv-no-mapped.v lib/inv.v
+flatten
+delete INV
+opt
+write_verilog -noattr final.v
+
